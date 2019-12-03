@@ -71,15 +71,15 @@ class Register extends React.Component{
               <div className="row">
                 <div className="col-md-8">
                   <div className="form-group">
-                    <input name='username' type="text" className="form-control"  placeholder="Enter Your Name" onChange={this.onChange}  />
+                    <input name='username' type="text" className="form-control"  placeholder="Enter Your Name" onChange={this.onChange}  required/>
                   </div>
                   <div className="form-group">
-                    <input name='email' type="email" className="form-control"  placeholder="Enter Your email" onChange={this.onChange}  />
+                    <input name='email' type="email" className="form-control"  placeholder="Enter Your email" onChange={this.onChange}  required/>
                   </div>
                   <div className="form-group">
-                    <input type="password" name='password' className="form-control" placeholder="Enter Your Password" onChange={this.onChange} />
+                    <input type="password" name='password' className="form-control" placeholder="Enter Your Password" onChange={this.onChange} required />
                   </div>
-                  <select name='role_id' class="form-control select2 custom-select" data-placeholder="Choose one" onChange={this.onChange}>
+                  <select name='role_id' class="form-control select2 custom-select" data-placeholder="Choose one" onChange={this.onChange} required>
 					<option label="Select Register as">
 					</option>
 					<option value="1">Software Engineer</option>

@@ -12,7 +12,7 @@ class Card extends React.Component{
    
    }
    componentDidMount(){
-     fetch("http://localhost:5000/engineer")
+     fetch('http://localhost:5000/engineer/')
      .then(response => response.json())
      .then(data => this.setState({ items : data }))
    }
@@ -38,7 +38,7 @@ class Card extends React.Component{
                         <h5 className="card-title mb-3">{item.description}</h5>
                         <p className="card-text">{item.location}</p>
                         <p className="card-text">{item.skill_name}</p>
-                        <Link to className="btn btn-primary" onClick={this.getUsers}>View More</Link>
+                        <Link to={this.props.id_engineer} className="btn btn-primary" onClick={this.getUsers}>View More</Link>
                     </div>
           </li>
           

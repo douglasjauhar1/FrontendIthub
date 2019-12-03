@@ -12,6 +12,9 @@ import Register from './pages/Register';
 import Postcompany from './pages/Postcompany';
 import ListCompany from './pages/Listcompany';
 import Postengineer from './pages/Postengineer';
+import Work from './pages/Work';
+import ProtectRoute from './auth/ProtectRoute'
+
 
 function App() {
   return (
@@ -21,7 +24,7 @@ function App() {
       path={'/'}
       component={Login}
       />
-      <Route 
+      <ProtectRoute 
       path={'/profile'}
       component={Profile}
       />
@@ -44,6 +47,10 @@ function App() {
                   <Route 
       path={'/regengineer'}
       component={Postengineer}
+      />
+                   <Route 
+      path={'/work'}
+      component={Work}
       />
                       <Route 
       path={'/allcomp'}

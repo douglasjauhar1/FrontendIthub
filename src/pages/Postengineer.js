@@ -2,23 +2,28 @@ import React, {Fragment} from 'react'
 import AppHeader from '../global/wrapper/app/AppHeader'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
+import formData from 'form-data';
+
 class Postengineer extends React.Component{
   constructor(props) {
     super(props)
     
     this.state = {
       login: false,
+      foto: null,
       formData: {
         name : '',
         description: '',
-        foto : 'https://icon-library.net/images/avatar-png-icon/avatar-png-icon-23.jpg',
         location: '' ,
         dob : '',
-        showcase : ''
-     }
+        showcase : '',
+     
+     },
     }
     this.onChange=this.onChange.bind(this)
     this.handleEngineer=this.handleEngineer.bind(this)
+    this.setData = this.setData.bind(this);
+    this.userForm = new FormData()
   }
   onChange(event){
     let dataForm = {...this.state.formData};
@@ -28,14 +33,25 @@ class Postengineer extends React.Component{
     },() => {
        console.log(this.state.formData);
     })
+  }
+  setData () {
+    this.userForm.append('photo', this.state.foto);
+    this.userForm.append('name', this.state.formData.name)
+    this.userForm.append('dob', this.state.formData.dob)
+    this.userForm.append('location', this.state.formData.location)
+    this.userForm.append('showcase', this.state.formData.showcase)
+    this.userForm.append('description', this.state.formData.description)
 
   }
+
   handleEngineer(event){
+    // return console.log(this.userForm.get('photo'))
+    this.setData()
     axios({
       method: 'post',
       url: 'http://localhost:5000/engineer',
-      headers: {'Content-Type': 'application/json'},
-      data: this.state.formData
+      headers: {'Content-Type': 'multipart/form-data'},
+      data: this.userForm
    }).then(res => {
     const result = res.data
     console.log(result)
@@ -59,6 +75,25 @@ class Postengineer extends React.Component{
 
    event.preventDefault()
   }
+
+  fileSelectedHandler = event => {
+    this.setState({
+      foto: event.target.files[0]
+    }, ()=> {
+      console.log(this.state.foto)
+    })
+  }
+
+  // async fileUploadHandler() {
+  //   try {
+  //     const fd = new FormData();
+  //     fd.append('photo', this.state.foto)
+  //     const response = await axiosPost('http://localhost:5000/engineer/', fd)
+  //     console.log(response.data)
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
     render() {
       if (this.state.login) {
         return <Redirect to={'/home'} />
@@ -107,6 +142,8 @@ class Postengineer extends React.Component{
                         <img src="../assets/images/users/female/5.jpg" alt="" className="userpicimg" />
                       </div>
                       <div className="text-center">
+                        <input type="file"  onChange={this.fileSelectedHandler} 
+                      />
                         <a href="#" className="btn btn-primary mt-1"><i className="fe fe-camera  mr-1" />Change Photo</a><br />
                       </div>
                     </div>

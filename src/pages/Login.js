@@ -6,7 +6,8 @@ import {Link, Redirect} from 'react-router-dom'
      login: false,
      users: {
       username : '',
-      password : ''
+      password : '',
+      alert : false
      }
    }
    handleChange = (e)=>{
@@ -27,6 +28,7 @@ import {Link, Redirect} from 'react-router-dom'
 
    }).then(res => {
       const result = res.data
+      localStorage.setItem('login', true)
       console.log(result)
       this.setState({
         login: true
@@ -34,13 +36,22 @@ import {Link, Redirect} from 'react-router-dom'
 
    }).catch(err => {
       if (err.response) {
+        this.setState({
+          alert : true
+        })
          const result = err.response.data
          return console.log(result)
       }
       if (err.request) {
+        this.setState({
+          alert : true
+        })
          return console.log(err.request)
       }
       else {
+        this.setState({
+          alert : true
+        })
          return console.log(err)
       }
    })
@@ -62,7 +73,15 @@ import {Link, Redirect} from 'react-router-dom'
             </div>
            
             <div className="card-body">
+              {/* {(this.state.alert === true)
+               <div className="alert alert-icon alert-danger" role="alert">
+               <i className="fa fa-frown-o mr-2" aria-hidden="true" /> Oh snap!Change a few things up and try submitting again.
+             </div>
+              }
+    */}
+            {(this.state.alert === true)?<div className="alert alert-danger" role="alert">the username or password invalid</div>:null}
             <form onSubmit={this.handleSubmit}>
+           
               <div className="row">
                 <div className="col-md-8">
                   <div className="form-group">

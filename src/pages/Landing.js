@@ -10,7 +10,9 @@ class Landing extends Component {
         return(
             <WrapperApp> 
                 <Slide/>
-                 <Card/>
+                 <Card
+                    id_engineer='17'
+                 />
             </WrapperApp>
        
         )
