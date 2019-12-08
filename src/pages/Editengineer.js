@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import React, {Fragment} from 'react'
 import AppHeader from '../global/wrapper/app/AppHeader'
 import axios from 'axios'

@@ -20,7 +20,7 @@ export class Pageproject extends Component {
             axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
           var token = localStorage.getItem('Authorization');
             axios.defaults.headers.common['Authorization'] = token;
-            axios.get('http://localhost:5000/myhire/readproject')
+            axios.get('http://localhost:2000/myhire/readproject')
             .then(res => {
               const project = res.data;
               console.log(project.result);

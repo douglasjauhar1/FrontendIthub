@@ -19,7 +19,7 @@ class Landing extends Component {
     async getsearch() {
         var token = localStorage.getItem('Authorization');
         axios.defaults.headers.common['Authorization'] = token;
-        axios.get('http://52.90.6.74:5000/'+`/myhire/search/?skill=${this.state.title}`)
+        axios.get('http://52.90.6.74:2000/'+`/myhire/search/?skill=${this.state.title}`)
             .then(async res => {
                 const persons = await res.data.result
                 
@@ -71,7 +71,7 @@ class Landing extends Component {
                              {/* <h1>{item.name}</h1> */}
                              
                              </div>
-                             <img src={`http://localhost:5000/myhire/file/`+item.photo} style={{width : '100%', height : 200, objectFit : 'cover'}}/>
+                             <img src={`http://localhost:2000/myhire/file/`+item.photo} style={{width : '100%', height : 200, objectFit : 'cover'}}/>
                              <div className="card-body">
                                         <h5 className="card-title mb-3">{item.profession}</h5>
                                         <p className="card-text">

@@ -38,7 +38,7 @@ async sendLogin() {
     try{
       const response = await axios({
         method: 'post',
-        url: 'http://52.90.6.74:5000/myhire/regis',
+        url: 'http://52.90.6.74:2000/myhire/regis',
         data: {
           username: this.state.username,
           password: this.state.password,

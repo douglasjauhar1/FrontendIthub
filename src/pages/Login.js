@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import  React from 'react'
 import axios from 'axios'
 import {Link, Redirect} from 'react-router-dom'
@@ -37,7 +36,7 @@ async sendLogin() {
     try{
       const response = await axios({
         method: 'post',
-        url: 'http://52.90.6.74:5000/myhire/login',
+        url: 'http://52.90.6.74:2000/myhire/login',
         
         data: {
           username: this.state.username,
