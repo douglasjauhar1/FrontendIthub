@@ -4,11 +4,11 @@ import axios from 'axios'
 import {Redirect} from 'react-router-dom'
 axios.defaults.headers.post['Content-Type'] = 'multipart/form-data'
 
-class Postengineer extends React.Component{
+class Editengineer extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-        name: '',
+        name: this.props.name,
         gender: '',
         date_of_birth:'',
         email:'',
@@ -20,7 +20,8 @@ class Postengineer extends React.Component{
         profession : '',
         created_by: '',
         photo: null,
-        isSubmit: '0'
+        isSubmit: '0',
+        arr_engineer: ''
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,7 +51,7 @@ handleChange(event) {
 handleSubmit(event) {
 
    
-    this.sendForm();
+        this.editForm();
     this.setState({
         isSubmit: '1'
     })
@@ -62,6 +63,15 @@ async editForm() {
     try{
         let formData = new FormData();
         formData.append('name', this.state.name)
+        formData.append('gender', this.state.gender)
+        formData.append('date_of_birth', this.state.date_of_birth)
+        formData.append('email', this.state.email)
+        formData.append('phone_number', this.state.phone_number)
+        formData.append('location', this.state.location)
+        formData.append('skill', this.state.skill)
+        formData.append('showcase', this.state.showcase)
+        formData.append('description', this.state.description)
+        formData.append('profession', this.state.profession)
         formData.append('photo', this.state.photo, this.state.photo.name);
         
       const response = await axios({
@@ -91,15 +101,6 @@ async sendForm() {
     try{
         let formData = new FormData();
         formData.append('name', this.state.name)
-        formData.append('gender', this.state.gender)
-        formData.append('date_of_birth', this.state.date_of_birth)
-        formData.append('email', this.state.email)
-        formData.append('phone_number', this.state.phone_number)
-        formData.append('location', this.state.location)
-        formData.append('skill', this.state.skill)
-        formData.append('showcase', this.state.showcase)
-        formData.append('description', this.state.description)
-        formData.append('profession', this.state.profession)
         formData.append('photo', this.state.photo, this.state.photo.name);
         
       const response = await axios({
@@ -113,16 +114,47 @@ async sendForm() {
         console.log(error);
     }
 }
-
+componentDidMount(){
+  var idEng = this.props.match.params.idEngineer
+  // console.log(idEng);
+  
+  var token = localStorage.getItem('Authorization');
+  axios.defaults.headers.common['Authorization'] = token;
+  fetch('http://localhost:5000/engineer/by/'+idEng  )
+  .then(response => response.json())
+  .then(data => this.setState({ arr_engineer: data[0] })      )
+  let login = localStorage.getItem('Login');
+  // console.log('data:'+data);
+  // console.log(this.state.arr_engineer);
+  
+  
+  if(login == 0){
+      this.setState({
+          isLogin: '0'
+      });
+  }
+}
+  // async fileUploadHandler() {
+  //   try {
+  //     const fd = new FormData();
+  //     fd.append('photo', this.state.foto)
+  //     const response = await axiosPost('http://localhost:5000/engineer/', fd)
+  //     console.log(response.data)
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
     render() {
-
+      // if (this.state.login) {
+      //   return <Redirect to={'/home'} />
+      // }
         return(
             <Fragment>
             <AppHeader/>
             <div className="col-lg-12 col-xl-8 col-md-12 col-sm-12 mx-auto" style={{marginTop : 120}}>
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Register Your Identity</h3>
+                <h3 className="card-title">Edit Your Identity</h3>
               </div>
               <div className="card-body">
                 <div className="row">
@@ -132,13 +164,13 @@ async sendForm() {
               
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">Your Name</label>
-                  <input type="text" name="name"className="form-control" id="exampleInputEmail1" placeholder="Input Your Name"onChange={this.handleChange} />
+                  <input type="text" name="name"className="form-control" id="exampleInputEmail1" onChange={this.handleChange} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputnumber">Date of Birth</label>
                  <select name='gender' type='text' className="form-control" onChange={this.handleChange} >
-                 <option value='Male'>Male</option>
-                 <option value='Female'>Female</option>
+                 <option value='0'>Male</option>
+                 <option value='1'>Female</option>
                  </select>
                 </div>
                 <div className="form-group">
@@ -197,7 +229,7 @@ async sendForm() {
                 <a href="#" className="btn btn-success mt-1" onClick=
                 {this.handleSubmit}>Save</a>
                 <a href="#" className="btn btn-warning mt-1">Cancel</a>
-                {(this.state.isSubmit==='1')&&<Redirect to='/home'></Redirect> }
+                {(this.state.isSubmit==='1')&&<Redirect push to='/home'></Redirect> }
               </div>
             </div>
           </div>
@@ -205,4 +237,4 @@ async sendForm() {
         )
     }
 }
-export default Postengineer
+export default Editengineer

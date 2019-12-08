@@ -3,61 +3,110 @@ import AppHeader from '../global/wrapper/app/AppHeader'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
 class Postcompany extends React.Component{
-  constructor(props) {
-    super(props)
-    
+  constructor(props){
+    super(props);
     this.state = {
-      login: false,
-      formData: {
-        name : '',
-        logo : 'https://icon-library.net/images/avatar-png-icon/avatar-png-icon-23.jpg',
-        location: '' ,
-        description: '',
-        role_id : 2
-     }
+        name: '',
+        // gender: '',
+        // date_of_birth:'',
+        // email:'',
+        // phone_number:'',
+        // location:'',
+        // skill:'',
+        // showcase:'',
+        // description:'',
+        // profession : '',
+        // created_by: '',
+        photo: null,
+        isSubmit: '0'
     }
-    this.onChange=this.onChange.bind(this)
-    this.handleCompany=this.handleCompany.bind(this)
-  }
-  onChange(event){
-    let dataForm = {...this.state.formData};
-    dataForm[event.target.name] = event.target.value;
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.sendForm = this.sendForm.bind(this);
+    this.editForm = this.editForm.bind(this);
+}
+
+fileChange = event => {
+    console.log(event.target.files[0]); 
     this.setState({
-       formData: dataForm
-    },() => {
-       console.log(this.state.formData);
-    })
+        photo: event.target.files[0]
+    });  
+}
 
-  }
-  handleCompany(event){
-    axios({
-      method: 'post',
-      url: 'http://localhost:5000/company',
-      headers: {'Content-Type': 'application/json'},
-      data: this.state.formData
-   }).then(res => {
-    const result = res.data
-    console.log(result)
+handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
     this.setState({
-      login: true
+    [name]: value
+    },()=>{
+      console.log(this.state)
+    });
+}
+
+handleSubmit(event) {
+
+   
+    this.sendForm();
+    this.setState({
+        isSubmit: '1'
     })
+    event.preventDefault();
+}
 
- }).catch(err => {
-    if (err.response) {
-       const result = err.response.data
-       return console.log(result)
-    }
-    if (err.request) {
-       return console.log(err.request)
-    }
-    else {
-       return console.log(err)
-    }
- })
- 
+async editForm() {
 
-   event.preventDefault()
-  }
+    try{
+        let formData = new FormData();
+        formData.append('name', this.state.name)
+        formData.append('photo', this.state.photo, this.state.photo.name);
+        
+      const response = await axios({
+        method: 'put',
+        url: 'http://localhost:5000/myhire/edit',
+        data: formData
+        // data: {
+        //     name: this.state.name,
+        //     photo: this.state.photo,
+        //     gender: this.state.gender,
+        //     date_of_birth: this.state.date_of_birth,
+        //     email: this.state.email,
+        //     phone_number: this.state.phone_number, 
+        //     location: this.state.location,
+        //     skill: this.state.skill,
+        //     showcase: this.state.showcase,
+        //     description: this.state.description
+        // }
+      });/*  */
+        console.log(response.data.result.token);
+    }catch(error) {/*  */
+        console./*  */log(error);
+    }
+}
+
+async sendForm() {
+    try{
+        let formData = new FormData();
+        formData.append('name', this.state.name)
+        formData.append('email', this.state.email)
+        formData.append('phone_number', this.state.phone_number)
+        formData.append('location', this.state.location)
+        formData.append('required_skill', this.state.required_skill)
+        formData.append('description', this.state.name)
+        formData.append('photo', this.state.photo, this.state.photo.name);
+        
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:5000/myhire/form/',
+        data: formData
+    
+      });
+        console.log(response.data.result.token);
+    }catch(error) {
+        console.log(error);
+    }
+}
     render() {
       if (this.state.login) {
         return <Redirect to={'/home'} />
@@ -77,14 +126,19 @@ class Postcompany extends React.Component{
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">Company Name</label>
-                  <input type="text" name="name"className="form-control" id="exampleInputEmail1" placeholder="Your Company Name"onChange={this.onChange} />
+                  <input type="text" name="name"className="form-control" id="exampleInputEmail1" placeholder="Your Company Name"onChange={this.handleChange} />
                 </div>
-              
-                  <input type="hidden" name="logo"className="form-control" id="exampleInputEmail1" placeholder="Your Company Location"onChange={this.onChange} />
-             
+                <div className="form-group">
+                  <label htmlFor="exampleInputEmail1">Email</label>
+                  <input type="text" name="email"className="form-control" id="exampleInputEmail1" placeholder="Your Company Name"onChange={this.handleChange} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="exampleInputEmail1">Phone Number</label>
+                  <input type="text" name="phone_number"className="form-control" id="exampleInputEmail1" placeholder="Your Company Name"onChange={this.handleChange} />
+                </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">Location</label>
-                <input type="text" name="location" className="form-control" id="exampleInputEmail1" placeholder="Your Company Location" onChange={this.onChange}  />
+                <input type="text" name="location" className="form-control" id="exampleInputEmail1" placeholder="Your Company Location" onChange={this.handleChange}  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="exampleInputnumber">Description</label>
@@ -98,7 +152,8 @@ class Postcompany extends React.Component{
                         <img src="../assets/images/users/female/5.jpg" alt="" className="userpicimg" />
                       </div>
                       <div className="text-center">
-                        <a href="#" className="btn btn-primary mt-1"><i className="fe fe-camera  mr-1" />Change Photo</a><br />
+                        <a href="#" className="btn btn-primary mt-1"><i className="fe fe-camera  mr-1" />
+                        Change Photo</a><br /> <input type="file" name='photo'  onChange={this.fileChange} />
                       </div>
                     </div>
                   </div>
@@ -106,8 +161,9 @@ class Postcompany extends React.Component{
               </div>
               <div className="card-footer text-right">
                 <a href="#" className="btn btn-success mt-1" onClick=
-                {this.handleCompany}>Save</a>
+                {this.handleSubmit}>Save</a>
                 <a href="#" className="btn btn-warning mt-1">Cancel</a>
+                {(this.state.isSubmit==='1')&&<Redirect to='/home'></Redirect> }
               </div>
             </div>
           </div>

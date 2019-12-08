@@ -8,7 +8,7 @@ class Editprofile extends React.Component{
             <div className="col-lg-12 col-xl-8 col-md-12 col-sm-12 mx-auto" style={{marginTop : 120}}>
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">Register Your Company Details</h3>
+                <h3 className="card-title">Edit Your Company Details</h3>
               </div>
               <div className="card-body">
                 <div className="row">

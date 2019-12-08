@@ -53,7 +53,7 @@ class AppFooter extends Component {
 				  <footer className="main-footer pl-0 pr-0">
 					<div className="row">
 					  <div className="col-xl-8 col-lg-12 col-md-12 footer1">
-						Copyright ©Splite 201	8. Design By<a href="https://spruko.com/"> Spruko</a>
+					Douglas Jauhar 
 					  </div>
 					  <div className="col-xl-4 col-lg-12 col-md-12 ml-auto text-right">
 						<ul className="footer-social-list ">

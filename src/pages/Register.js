@@ -1,65 +1,82 @@
 import React from 'react'
 import axios from 'axios'
+import swal from 'sweetalert';
 import {Redirect} from 'react-router-dom'
 class Register extends React.Component{
-  constructor(props) {
-    super(props)
-    
+  constructor(props){
+    super(props);
     this.state = {
-      values: 0,
-      formData: {
-        username : '',
-        email: '' ,
-        role_id: 0,
-        password: ''
-     }
+        username: '',
+        password: '',
+        category: '',
+        isChange: null,
+       
     }
-    this.onChange=this.onChange.bind(this)
-    this.handleRegister=this.handleRegister.bind(this)
-  }
-  onChange(event){
-    let dataForm = {...this.state.formData};
-    dataForm[event.target.name] = event.target.value;
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.sendLogin = this.sendLogin.bind(this);
+}
+
+handleChange(event) {
+    const target = event.target;
+    const value =  target.value;
+    const name = target.name;
+
     this.setState({
-       formData: dataForm
-    },() => {
-       console.log(this.state.formData);
-    })
+    [name]: value
+    });
+}
 
-  }
-  handleRegister(event){
-    axios({
-      method: 'post',
-      url: 'http://localhost:5000/account',
-      headers: {'Content-Type': 'application/json'},
-      data: this.state.formData
-   }).then(res => {
-     this.setState({
-       values: this.state.formData.role_id
-     })
-      console.log(this.state.formData.role_id)
-   }).catch(err => {
-      if (err.response) {
-         return console.log(err.response.data)
-      }
-      if (err.request) {
-         return console.log('error from request', err.request);
-      }
-      else {
-         console.log(err)
-      }
-   })
+handleSubmit(event) {
+    console.log('submit!');
+    this.sendLogin()
+    event.preventDefault();
+}
 
-   event.preventDefault()
+async sendLogin() {
+    try{
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:5000/myhire/regis',
+        data: {
+          username: this.state.username,
+          password: this.state.password,
+          category: this.state.category
+        }
+      
+      });
+      const regist = await swal({
+        title: "Welcome to ithubs",
+        text: "Use your username and password for login",
+        icon: "success",
+        dangerMode: false,
+      });
+      if (regist) {
+        swal("Welcome!", "Please Completed your profile", "success");
+      }
+      axios.defaults.headers.common['Authorization'] = response.data.result.token;
+      localStorage.setItem("Authorization", response.data.result.token);
+        console.log(response.data.result.token);
+        this.setState({
+            isChange: 2,
+            values : this.state.category
+
+        })
+      }catch(error) {
+        console.log(error);
+        this.setState({
+            isChange: 1,
+            
+        })
+      }
   }
-  
     render(){
-      if (this.state.values == 1) {
+      if (this.state.values == 0) {
         return <Redirect to={'/regengineer'} />
-      }
-      if (this.state.values == 2) {
+      }if (this.state.values == 1){
         return <Redirect to={'/regcompany'} />
       }
+     
         return(
         <div className="row">
         <div className="col-md-6 mx-auto text-center" style={{marginTop : '150px', alignContent : 'center'}}>
@@ -68,28 +85,26 @@ class Register extends React.Component{
               <h3 className="mb-0 card-title" style={{textAlign : 'center'}}>Register Page</h3>
             </div>
             <div className="card-body">
+            {/* {(this.state.isValid === 1)?<div className="alert alert-danger mb-5" role="alert">oops ... the username is already registered, please provide another username</div>:null} */}
               <div className="row">
                 <div className="col-md-8">
                   <div className="form-group">
-                    <input name='username' type="text" className="form-control"  placeholder="Enter Your Name" onChange={this.onChange}  required/>
+                    <input name='username' type="text" className="form-control"  placeholder="Enter Your Name" onChange={this.handleChange}  required/>
                   </div>
                   <div className="form-group">
-                    <input name='email' type="email" className="form-control"  placeholder="Enter Your email" onChange={this.onChange}  required/>
+                    <input type="password" name='password' className="form-control" placeholder="Enter Your Password" onChange={this.handleChange} required />
                   </div>
-                  <div className="form-group">
-                    <input type="password" name='password' className="form-control" placeholder="Enter Your Password" onChange={this.onChange} required />
-                  </div>
-                  <select name='role_id' class="form-control select2 custom-select" data-placeholder="Choose one" onChange={this.onChange} required>
+                  <select name='category' class="form-control select2 custom-select" data-placeholder="Choose one" onChange={this.handleChange} required>
 					<option label="Select Register as">
 					</option>
-					<option value="1">Software Engineer</option>
-					<option value="2">Company</option>
+					<option value="0">Software Engineer</option>
+					<option value="1">Company</option>
 					</select>  
                      <br/> 
-                    <button type="submit" className="btn btn-primary mt-3" onClick={this.handleRegister}>Register</button>
+                    <button type="submit" className="btn btn-primary mt-3" onClick={this.handleSubmit}>Register</button>
                 </div>
                 <div className="col-md-4 mt-3">
-                    <img src="https://i.imgur.com/7HqM7LW.png" style={{width : 200, height : 200, marginTop: -30}}/>
+                    <img src="https://i.imgur.com/7HqM7LW.png" style={{width : 200, height : 200, marginTop: -20}}/>
                 </div>
               </div>
             </div>

@@ -1,69 +1,71 @@
 import  React from 'react'
 import axios from 'axios'
+import connect from 'react-redux'
+import action from '../../src/Public/Redux/Action/Engineer'
 import {Link, Redirect} from 'react-router-dom'
  class Login extends React.Component{
-   state = {
-     login: false,
-     users: {
-      username : '',
-      password : '',
-      alert : false
-     }
-   }
-   handleChange = (e)=>{
-    const data = {...this.state.users};
-    data[e.target.name] = e.target.value;
+  constructor(props){
+    super(props);
+    this.state = {
+        username: '',
+        password: '',
+        isvalid: '0',
+        
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.sendLogin = this.sendLogin.bind(this);
+}
+
+handleChange(event) {
+    const target = event.target;
+    const value =  target.value;
+    const name = target.name;
+
     this.setState({
-       users : data
-    }, ()=> {console.log(this.state.users)})
-   }
+    [name]: value
+    });
+}
 
-   handleSubmit = (event) =>{
-    
-    axios({
-      method: 'post',
-      url: 'http://localhost:5000/login',
-      headers: {'Content-Type': 'application/json'},
-      data: this.state.users
+handleSubmit(event) {
+    console.log('submit!');
+    this.sendLogin();
+    event.preventDefault();
 
-   }).then(res => {
-      const result = res.data
-      localStorage.setItem('login', true)
-      console.log(result)
+}
+
+async sendLogin() {
+    try{
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:5000/myhire/login',
+        data: {
+          username: this.state.username,
+          password: this.state.password
+        }
+      });
+      console.log(response.data.result.category)
+      axios.defaults.headers.common['Authorization'] = response.data.result.token;
+      localStorage.setItem("Authorization", response.data.result.token);
+      localStorage.setItem("Category", response.data.result.category);
+      localStorage.setItem("Login", '1');
       this.setState({
-        login: true
+        isvalid: '2'
       })
-
-   }).catch(err => {
-      if (err.response) {
+      
+      
+      }catch(error) {
+        console.log(error);
         this.setState({
-          alert : true
+          isvalid: '1'
         })
-         const result = err.response.data
-         return console.log(result)
       }
-      if (err.request) {
-        this.setState({
-          alert : true
-        })
-         return console.log(err.request)
-      }
-      else {
-        this.setState({
-          alert : true
-        })
-         return console.log(err)
-      }
-   })
-
-   event.preventDefault()
-    
-   }
+  }
  
      render(){
-       if (this.state.login) {
-         return <Redirect to={'/home'} />
-       }
+      //  if (this.state.login) {
+      //    return <Redirect to={'/home'} />
+      //  }
          return(
         <div className="row">
         <div className="col-md-6 mx-auto text-center" style={{marginTop : '150px', alignContent : 'center'}}>
@@ -79,7 +81,7 @@ import {Link, Redirect} from 'react-router-dom'
              </div>
               }
     */}
-            {(this.state.alert === true)?<div className="alert alert-danger" role="alert">the username or password invalid</div>:null}
+          {(this.state.isvalid === '1')?<div className="alert alert-danger" role="alert">the username or password invalid</div>:null}
             <form onSubmit={this.handleSubmit}>
            
               <div className="row">
@@ -100,6 +102,7 @@ import {Link, Redirect} from 'react-router-dom'
                 </div>
               </div>
               </form>
+              {(this.state.isvalid==='2')&&<Redirect push to='/home'></Redirect> }
             </div>
           </div>
         </div></div>

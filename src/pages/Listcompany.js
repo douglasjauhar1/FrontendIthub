@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
+import WrapperApp from '../wrapper/WrapperApp';
 class ListCompany extends React.Component{
     constructor(){
      super();
@@ -12,17 +13,32 @@ class ListCompany extends React.Component{
    
    }
    componentDidMount(){
-     fetch("http://localhost:5000/company")
-     .then(response => response.json())
-     .then(data => this.setState({ items : data }))
-   }
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+    var token = localStorage.getItem('Authorization');
+    axios.defaults.headers.common['Authorization'] = token;
+    try{
+      axios.get('http://localhost:5000/company/read')
+        .then(res => {
+          const persons = res.data;
+         
+          this.setState({ items: persons });
+          
+        })
+      }catch(error) {
+        console.log(error);
+      }
+}
      render(){
-        const {items} = this.state
+      // console.log(this.state.items);
         return( 
+          <WrapperApp>
+          
   
-            <div className="row">
-           
-     {items.map((item, index) =>
+            <div className="row" style={{marginBottom : 100, marginTop : 200}}>
+            <div className="card-body">
+       
+      </div>
+     {this.state.items.map((item, index) =>
           
       <div className="col-md-3">   
         <div className="card"> 
@@ -33,7 +49,8 @@ class ListCompany extends React.Component{
              {/* <h1>{item.name}</h1> */}
              
              </div>
-             <img src={item.logo} style={{width : '100%', height : 200, objectFit : 'cover'}}/>
+             <img src={`http://localhost:5000/myhire/file/`+item.logo} style={{width : '100%', height : 200, objectFit : 'cover'}}/>
+      
              <div className="card-body">
                         <h5 className="card-title mb-3">{item.description}</h5>
                         <p className="card-text">{item.location}</p>
@@ -48,7 +65,7 @@ class ListCompany extends React.Component{
           </div>
             
       
-           
+          </WrapperApp>
        
         )
     }

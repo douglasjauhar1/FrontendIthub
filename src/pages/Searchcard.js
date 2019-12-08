@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
-class Card extends React.Component{
+class Searchcard extends React.Component{
     constructor(){
      super();
      //mengirimkan state ke bagian render 
@@ -15,13 +15,9 @@ class Card extends React.Component{
    componentDidMount(){
     var token = localStorage.getItem('Authorization');
     axios.defaults.headers.common['Authorization'] = token;
-    
-    fetch('http://localhost:5000/engineer/read')
-    .then(response => response.json())
+    axios.get(`http://localhost:3000/myhire/search/?skill=${this.props.title}`)
     .then(data => this.setState({ items : data }))
     let login = localStorage.getItem('Login');
-    console.log();
-    
     if(login == 0){
         this.setState({
             isLogin: '0'
@@ -53,8 +49,8 @@ class Card extends React.Component{
                         <p className="card-text">{item.location}</p>
                         <p className="card-text">{item.skill}</p>
                         
-                        <Link to={`/profile/${item.created_by}`} className="btn btn-primary" onClick={this.getUsers}>View</Link>
-                     
+                        <Link to={`/profile/${item.created_by}`} className="btn btn-primary" onClick={this.getUsers}>View More</Link>
+                        <Link to={`/edit/${item.created_by}`} className="btn btn-primary" onClick={this.getUsers}>Edit</Link>
                     </div>
           </li>
           
@@ -69,4 +65,4 @@ class Card extends React.Component{
         )
     }
 }
-export default Card
+export default Searchcard

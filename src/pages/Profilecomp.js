@@ -2,40 +2,23 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import WrapperApp from '../wrapper/WrapperApp'
-class Profile extends React.Component{
+class Profilecomp extends React.Component{
   constructor(props) {
     super(props)
     this.state = {
       arr_engineer: '',
-      select : ''
     }
   }
 
   componentDidMount(){
-    //if(this.props.select == '1'){
     var idEng = this.props.match.params.idEngineer
-    console.log(idEng);
+    // console.log(idEng);
     
     var token = localStorage.getItem('Authorization');
     axios.defaults.headers.common['Authorization'] = token;
     fetch('http://localhost:5000/engineer/by/'+idEng  )
     .then(response => response.json())
-    .then(data => {
-      this.setState({ arr_engineer: data[0] }) 
-      console.log(data)
-    })
-   
-    
-   // }
-  
-    //else if(this.props.select == '2'){
-    //    var token = localStorage.getItem('Authorization');
-    //  axios.defaults.headers.common['Authorization'] = token;
-    //  fetch('http://localhost:5000/myhire/by/')
-    //  .then(response => response.json())
-    //  .then(data => this.setState({ arr_engineer: data[0] })      )
-    // }
-
+    .then(data => this.setState({ arr_engineer: data[0] })      )
     let login = localStorage.getItem('Login');
     // console.log('data:'+data);
     // console.log(this.state.arr_engineer);
@@ -53,11 +36,6 @@ class Profile extends React.Component{
     render(){
         return(
             <WrapperApp>
-              {/* {(this.props.category === '0')&&
-                <div>
-
-                </div>
-              } */}
             <div className="row">
             <div className="col-md-12" style={{marginTop : 100}}>
               <div className="card card-profile  overflow-hidden">
@@ -66,9 +44,9 @@ class Profile extends React.Component{
                     <div className="row justify-content-center">
                       <div className>
                         <div className>
-                        
+                          <Link to={`/myhire/file/`+this.state.arr_engineer.photo}>
                             <img src={`http://localhost:5000/myhire/file/`+this.state.arr_engineer.photo} className="avatar-xxl rounded-circle" alt="profile" />
-                         
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -77,8 +55,11 @@ class Profile extends React.Component{
                   <h4 className="mb-2 text-white">{this.state.arr_engineer.skill}</h4>
                   <h5 className="mb-2 text-white">{this.state.arr_engineer.profession}</h5>
                   <div className="text-center mb-4">
-                    <span><i className="fa fa-star text-warning" /><p className="text-white">90 % Project Rate</p></span>
-                 
+                    <span><i className="fa fa-star text-warning" /></span>
+                    <span><i className="fa fa-star text-warning" /></span>
+                    <span><i className="fa fa-star text-warning" /></span>
+                    <span><i className="fa fa-star-half-o text-warning" /></span>
+                    <span><i className="fa fa-star-o text-warning" /></span>
                   </div>
                   {/* <a href="#" className="btn btn-info btn-sm"><i className="fas fa-pencil-alt" aria-hidden="true" /> Edit profile</a> */}
                 </div>
@@ -175,4 +156,4 @@ class Profile extends React.Component{
         )
     }
 }
-export default Profile
+export default Profilecomp

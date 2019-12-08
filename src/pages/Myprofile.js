@@ -2,7 +2,9 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import WrapperApp from '../wrapper/WrapperApp'
-class Profile extends React.Component{
+import Listproject from './Listproject'
+
+class Myprofile extends React.Component{
   constructor(props) {
     super(props)
     this.state = {
@@ -11,40 +13,40 @@ class Profile extends React.Component{
     }
   }
 
-  componentDidMount(){
-    //if(this.props.select == '1'){
-    var idEng = this.props.match.params.idEngineer
-    console.log(idEng);
+  async componentDidMount(){
+
+    var token = localStorage.getItem('Authorization');
+    axios.defaults.headers.common['Authorization'] = token;
+    // var idEng = this.props.ideng
+    // console.log(idEng);
     
     var token = localStorage.getItem('Authorization');
     axios.defaults.headers.common['Authorization'] = token;
-    fetch('http://localhost:5000/engineer/by/'+idEng  )
-    .then(response => response.json())
-    .then(data => {
-      this.setState({ arr_engineer: data[0] }) 
-      console.log(data)
-    })
-   
+    console.log(token);
+    const profile = await axios.get('http://localhost:5000/myhire/by')
     
-   // }
-  
-    //else if(this.props.select == '2'){
-    //    var token = localStorage.getItem('Authorization');
-    //  axios.defaults.headers.common['Authorization'] = token;
-    //  fetch('http://localhost:5000/myhire/by/')
-    //  .then(response => response.json())
-    //  .then(data => this.setState({ arr_engineer: data[0] })      )
+    this.setState({ arr_engineer: profile.data.result[0] })
+    console.log(this.state.arr_engineer.name);
+    // fetch('http://localhost:5000/myhire/by')
+    // .then(response => response.json())
+    // .then(data => {
+    //   console.log(data)
+    //   this.setState({ arr_engineer: data[0] })
     // }
-
+      
+      
+    //   )
+      
+   
     let login = localStorage.getItem('Login');
-    // console.log('data:'+data);
-    // console.log(this.state.arr_engineer);
-    
-    
     if(login == 0){
         this.setState({
-            isLogin: '0'
+            isLogin: '1'
         });
+    }else {
+      this.setState({
+        isLogin: '2'
+    });
     }
 }
 
@@ -67,8 +69,8 @@ class Profile extends React.Component{
                       <div className>
                         <div className>
                         
-                            <img src={`http://localhost:5000/myhire/file/`+this.state.arr_engineer.photo} className="avatar-xxl rounded-circle" alt="profile" />
-                         
+                        <img src={`http://localhost:5000/myhire/file/`+this.state.arr_engineer.logo} className="avatar-xxl rounded-circle" alt="profile" />
+                          
                         </div>
                       </div>
                     </div>
@@ -77,8 +79,11 @@ class Profile extends React.Component{
                   <h4 className="mb-2 text-white">{this.state.arr_engineer.skill}</h4>
                   <h5 className="mb-2 text-white">{this.state.arr_engineer.profession}</h5>
                   <div className="text-center mb-4">
-                    <span><i className="fa fa-star text-warning" /><p className="text-white">90 % Project Rate</p></span>
-                 
+                    <span><i className="fa fa-star text-warning" /></span>
+                    <span><i className="fa fa-star text-warning" /></span>
+                    <span><i className="fa fa-star text-warning" /></span>
+                    <span><i className="fa fa-star-half-o text-warning" /></span>
+                    <span><i className="fa fa-star-o text-warning" /></span>
                   </div>
                   {/* <a href="#" className="btn btn-info btn-sm"><i className="fas fa-pencil-alt" aria-hidden="true" /> Edit profile</a> */}
                 </div>
@@ -93,7 +98,7 @@ class Profile extends React.Component{
                         </Link>
                       </li>
                       <li className="nav-item">
-        <a className="nav-link mb-sm-0 mb-md-0 mt-md-2 mt-0 mt-lg-0" id="tabs-icons-text-5-tab" data-toggle="tab" href="#tabs-icons-text-5" role="tab" aria-controls="tabs-icons-text-5" aria-selected="false"><i className="fa fa-cog mr-2" />More</a>
+        <a className="nav-link mb-sm-0 mb-md-0 mt-md-2 mt-0 mt-lg-0" id="tabs-icons-text-5-tab" data-toggle="tab" href="#tabs-icons-text-5" role="tab" aria-controls="tabs-icons-text-5" aria-selected="false"><i className="fa fa-cog mr-2" />Projects</a>
       </li>
                     </ul>
                   </div>
@@ -162,11 +167,7 @@ class Profile extends React.Component{
                           
                           </div>
                           <div className="tab-pane fade" id="tabs-icons-text-5" role="tabpanel" aria-labelledby="tabs-icons-text-5-tab">
-        <p>Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
-        <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus</p>
-        <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus</p>
-        <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus</p>
-        <p className="mb-4">because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure.</p>
+       <Listproject/>
       </div>
                           
                           </div></div></div></div></div>
@@ -175,4 +176,4 @@ class Profile extends React.Component{
         )
     }
 }
-export default Profile
+export default Myprofile
