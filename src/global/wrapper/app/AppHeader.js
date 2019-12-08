@@ -25,7 +25,7 @@ class AppHeader extends Component {
      
       const response = await axios({
         method: 'get',
-        url: 'http://localhost:4000/myhire/logout',
+        url: 'http://52.90.6.74:5000/myhire/logout',
       });
         console.log(response.data.result);
         localStorage.removeItem("Authorization");
@@ -46,7 +46,7 @@ class AppHeader extends Component {
     var token = localStorage.getItem('Authorization');
     axios.defaults.headers.common['Authorization'] = token;
     console.log(token);
-    const profile = await axios.get('http://localhost:5000/myhire/by')
+    const profile = await axios.get('http://52.90.6.74:5000/myhire/by')
     
     this.setState({ arr_engineer: profile.data.result[0] })
     console.log(this.state.arr_engineer===undefined);
@@ -130,14 +130,14 @@ class AppHeader extends Component {
                 </a>
               </div>
       {
-        (this.state.isLogin === '1')&&         <div className="ml-auto mt-3 pl-3">
+        (this.state.isLogin == '1')&&         <div className="ml-auto mt-3 pl-3">
         <Link to={'/register'} className="btn btn-pill btn-primary btn-md mr-3">Register</Link>
         <Link to={'/'} className="btn btn-pill btn-primary btn-md ">Login</Link>
       </div>
 
       }
       {
-        (this.state.isLogin === '2') &&      <div className="dropdown">
+        (this.state.isLogin == '2') &&      <div className="dropdown">
       <Link to ={'/allcomp'} >
         <h4 className="mt-5">Company</h4>
        </Link>
@@ -147,7 +147,7 @@ class AppHeader extends Component {
         
       }
          {
-        (this.state.isLogin === '2') &&      <div className="dropdown">
+        (this.state.isLogin == '2') &&      <div className="dropdown">
       <Link to ={'/project'} >
         <h4 className="mt-5 ml-5">Projects</h4>
        </Link>
@@ -158,7 +158,7 @@ class AppHeader extends Component {
       }
 
       {
-        (this.state.isLogin === '2') &&     
+        (this.state.isLogin == '2') &&     
          <div className="dropdown header-user">
       
                  <Link to={`/myprofile`}  className="nav-link leading-none siderbar-link" data-toggle="sidebar-right" data-target="sidebar-right">
@@ -187,7 +187,7 @@ class AppHeader extends Component {
 
 
       {
-        (this.state.isLogin === '2') &&      <div className="dropdown">
+        (this.state.isLogin == '2') &&      <div className="dropdown">
         <a className="nav-link icon siderbar-link" data-toggle="sidebar-right" data-target=".sidebar-right" onClick={this.handleSubmit}>
           <i className="fe fe-log-out" />
         </a>
@@ -197,7 +197,7 @@ class AppHeader extends Component {
         
       }
           
-      {(this.state.islogout==='1')&&<Redirect push to='/'></Redirect> }
+      {(this.state.islogout=='1')&&<Redirect push to='/'></Redirect> }
          
             </div>
           </div>

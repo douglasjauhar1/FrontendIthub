@@ -17,7 +17,7 @@ class ListCompany extends React.Component{
     var token = localStorage.getItem('Authorization');
     axios.defaults.headers.common['Authorization'] = token;
     try{
-      axios.get('http://localhost:5000/company/read')
+      axios.get('http://52.90.6.74:5000/company/read')
         .then(res => {
           const persons = res.data;
          
@@ -49,7 +49,7 @@ class ListCompany extends React.Component{
              {/* <h1>{item.name}</h1> */}
              
              </div>
-             <img src={`http://localhost:5000/myhire/file/`+item.logo} style={{width : '100%', height : 200, objectFit : 'cover'}}/>
+             <img src={`http://52.90.6.74:5000/myhire/file/`+item.logo} style={{width : '100%', height : 200, objectFit : 'cover'}}/>
       
              <div className="card-body">
                         <h5 className="card-title mb-3">{item.description}</h5>

@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import React, {Fragment} from 'react'
 import AppHeader from '../global/wrapper/app/AppHeader'
 import axios from 'axios'
@@ -76,7 +77,7 @@ async editForm() {
         
       const response = await axios({
         method: 'put',
-        url: 'http://localhost:5000/myhire/edit',
+        url: 'edit',
         data: formData
         // data: {
         //     name: this.state.name,
@@ -105,7 +106,7 @@ async sendForm() {
         
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:5000/myhire/form/',
+        url: 'http://52.90.6.74:5000/myhire/form/',
         data: formData
     
       });

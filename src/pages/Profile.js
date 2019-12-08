@@ -18,7 +18,7 @@ class Profile extends React.Component{
     
     var token = localStorage.getItem('Authorization');
     axios.defaults.headers.common['Authorization'] = token;
-    fetch('http://localhost:5000/engineer/by/'+idEng  )
+    fetch('http://52.90.6.74:5000/engineer/by/'+idEng  )
     .then(response => response.json())
     .then(data => {
       this.setState({ arr_engineer: data[0] }) 
@@ -67,7 +67,7 @@ class Profile extends React.Component{
                       <div className>
                         <div className>
                         
-                            <img src={`http://localhost:5000/myhire/file/`+this.state.arr_engineer.photo} className="avatar-xxl rounded-circle" alt="profile" />
+                            <img src={`http://52.90.6.74:5000/myhire/file/`+this.state.arr_engineer.photo} className="avatar-xxl rounded-circle" alt="profile" />
                          
                         </div>
                       </div>

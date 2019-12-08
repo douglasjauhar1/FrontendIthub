@@ -45,7 +45,7 @@ async sendProject(){
   try{  
     const response = await axios({
       method: 'POST',
-      url: 'http://localhost:5000/myhire/createproject',
+      url: 'http://52.90.6.74:5000/myhire/createproject',
       data: {
              name: this.state.name,
              skill: this.state.skill,

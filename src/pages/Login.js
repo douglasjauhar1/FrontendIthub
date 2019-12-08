@@ -1,7 +1,6 @@
+import 'dotenv/config'
 import  React from 'react'
 import axios from 'axios'
-import connect from 'react-redux'
-import action from '../../src/Public/Redux/Action/Engineer'
 import {Link, Redirect} from 'react-router-dom'
  class Login extends React.Component{
   constructor(props){
@@ -38,7 +37,8 @@ async sendLogin() {
     try{
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:5000/myhire/login',
+        url: 'http://52.90.6.74:5000/myhire/login',
+        
         data: {
           username: this.state.username,
           password: this.state.password

@@ -18,7 +18,7 @@ class Listproject extends React.Component{
         try{
           var token = localStorage.getItem('Authorization');
             axios.defaults.headers.common['Authorization'] = token;
-            const project =  await axios.get('http://localhost:5000/myhire/readproject')
+            const project =  await axios.get('http://52.90.6.74:5000/myhire/readproject')
             console.log(project);
             console.log(project.data.result);
             // .then(async res => {

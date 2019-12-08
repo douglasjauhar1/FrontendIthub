@@ -64,7 +64,7 @@ async editForm() {
         
       const response = await axios({
         method: 'put',
-        url: 'http://localhost:5000/myhire/edit',
+        url: 'http://52.90.6.74:5000/myhire/edit',
         data: formData
         // data: {
         //     name: this.state.name,

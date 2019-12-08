@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import React from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
@@ -16,7 +17,7 @@ class Card extends React.Component{
     var token = localStorage.getItem('Authorization');
     axios.defaults.headers.common['Authorization'] = token;
     
-    fetch('http://localhost:5000/engineer/read')
+    fetch('http://52.90.6.74:5000/engineer/read')
     .then(response => response.json())
     .then(data => this.setState({ items : data }))
     let login = localStorage.getItem('Login');
@@ -47,7 +48,7 @@ class Card extends React.Component{
              {/* <h1>{item.name}</h1> */}
              
              </div>
-             <img src={`http://localhost:5000/myhire/file/`+item.photo} style={{width : '100%', height : 200, objectFit : 'cover'}}/>
+             <img src={`http://52.90.6.74:5000/myhire/file/`+item.photo} style={{width : '100%', height : 200, objectFit : 'cover'}}/>
              <div className="card-body">
                         <h5 className="card-title mb-3">{item.profession}</h5>
                         <p className="card-text">{item.location}</p>

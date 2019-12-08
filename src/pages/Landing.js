@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import React, {Component} from 'react'
 import WrapperApp from '../wrapper/WrapperApp'
 import Card from './Card'
@@ -18,7 +19,7 @@ class Landing extends Component {
     async getsearch() {
         var token = localStorage.getItem('Authorization');
         axios.defaults.headers.common['Authorization'] = token;
-        axios.get(`http://localhost:5000/myhire/search/?skill=${this.state.title}`)
+        axios.get('http://52.90.6.74:5000/'+`/myhire/search/?skill=${this.state.title}`)
             .then(async res => {
                 const persons = await res.data.result
                 
@@ -50,12 +51,12 @@ class Landing extends Component {
             <WrapperApp changeSearch={this.changeSearch.bind(this)} title={this.state.title}> 
                 <Slide/>
                  {
-                     (this.state.isStart === '0')&&
+                     (this.state.isStart === '1')&&
                    <Card
                    />  
                  }
                  {
-                     (this.state.isStart === '1')&&
+                     (this.state.isStart === '0')&&
                      <div className="row">
            
                      {
